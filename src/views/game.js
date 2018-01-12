@@ -4,6 +4,7 @@ export class Game{
     this.plates = 5000;
     this.types = ["water","concrete"];
     this.texts = [];
+    this.currentPos = {x: 0, y: 0};
   }
   attached(){
     let that = this;
@@ -11,11 +12,17 @@ export class Game{
       if(!e.target.id.includes(",")){
         return;
       }
-      console.log(e.target.id);
+      clearInterval(that.walk);
+      let tmp = e.target.id.split(",");
+      let pos = {x: parseInt(tmp[1]),y: parseInt(tmp[0])};
+      console.log("TARGET");
+      console.log(pos);
+      console.log("------------");
       e.target.style.boxShadow = "inset 0px 0px 0px 2px white";
       setTimeout(x =>{
         e.target.style.boxShadow = "";
       },200);
+      that.goto(pos,e.target);
     };
 
     document.onkeydown = function(e) {
@@ -23,6 +30,7 @@ export class Game{
         let left = document.getElementById("char").style.left.split("px")[0];
         let result;
         let speed = 20;
+        console.log(e.keyCode);
         switch (e.keyCode) {
           case 13: //enter
                   if(that.input.length > 0){
@@ -30,49 +38,97 @@ export class Game{
                     that.input = "";
                   }
                   break;
-          case 37:
-              result = Math.floor(parseInt(left) - speed) + "px";
-              document.getElementById("char").style.left = result;
-              document.getElementById("char").style.transform = 'rotate(180deg)';
+          case 37: // <-
+              that.goRight();
               break;
-          case 38:
-                result = Math.floor(parseInt(top) - speed) + "px";
-                document.getElementById("char").style.top =  result;
-                document.getElementById("char").style.transform = 'rotate(270deg)';
+          case 38: //up
+                that.goUp();
                 break;
-          case 39:
-              result = Math.floor(parseInt(left) + speed) + "px";
-              document.getElementById("char").style.left = result;
-              document.getElementById("char").style.transform = 'rotate(0deg)';
+          case 39: // ->
+              that.goLeft();
               break;
-            case 40:
-                result = Math.floor(parseInt(top) + speed) + "px";
-                document.getElementById("char").style.top = result;
-                document.getElementById("char").style.transform = 'rotate(90deg)';
+            case 40: //down
+                that.goDown();
                 break;
         }
     };
   }
 
-  walkTo(x,y){
-    setInterval( x=> {
+  goto(pos,target){
+    this.walk = setInterval( x=> {
+      if(pos.x == this.currentPos.x && pos.y == this.currentPos.y){
+        clearInterval(this.walk);
+        return;
+      }
+      let delta = {x: pos.x - this.currentPos.x, y: pos.y - this.currentPos.y}
 
+      if(delta.x > 0){
+        this.goLeft();
+      }
+      else if(delta.x < 0){
+        this.goRight()
+      }
+      else if(delta.y > 0){
+        this.goDown();
+      }
+      else if(delta.y < 0){
+        this.goUp();
+      }
     },100);
   }
 
-  getTopPos(el) {
-      for (var topPos = 0;
-          el != null;
-          topPos += el.offsetTop, el = el.offsetParent);
-      return topPos;
+  goLeft(){
+    this.currentPos.x++;
+    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
+    document.getElementById("char").style.transform = 'rotate(0deg)';
+
+  }
+  goRight(){
+    this.currentPos.x--;
+    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
+    document.getElementById("char").style.transform = 'rotate(180deg)';
+
+  }
+  goUp(){
+    this.currentPos.y--;
+    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
+    document.getElementById("char").style.transform = 'rotate(270deg)';
+  }
+  goDown(){
+    this.currentPos.y++;
+    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
+    document.getElementById("char").style.transform = 'rotate(90deg)';
   }
 
-  getLeftPos(el) {
-    for (var leftPos = 0;
-        el != null;
-        leftPos += el.offsetLeft, el = el.offsetParent);
-    return leftPos;
-}
+  getPosition(el) {
+    var xPos = 0;
+    var yPos = 0;
+
+    while (el) {
+      if (el.tagName == "BODY") {
+        // deal with browser quirks with body/window/document and page scroll
+        var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+        var yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+        xPos += (el.offsetLeft - xScroll + el.clientLeft);
+        yPos += (el.offsetTop - yScroll + el.clientTop);
+      } else {
+        // for all other non-BODY elements
+        xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+      }
+
+      el = el.offsetParent;
+    }
+    return {
+      x: yPos,
+      y: xPos
+    };
+  }
 
   type(){
     let i = Math.floor(Math.random() * 2);
