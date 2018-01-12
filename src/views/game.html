@@ -2,8 +2,8 @@
 <div class="container game-wrapper" id="gameWrapper">
 
 <div class="square ${type()} p-absolute transition-fast" id="char" style="border-radius: 100%;top:0px;left:0px"></div>
-<div repeat.for="y of 5">
-  <div class="square ${type()}" repeat.for="x of 5" id="tile_${$parent.$index},${$index}">
+<div repeat.for="y of 10">
+  <div class="square ${type()} transition-medium" repeat.for="x of 10" id="${$parent.$index},${$index}">
   </div>
 </div>
 

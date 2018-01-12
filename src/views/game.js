@@ -8,11 +8,14 @@ export class Game{
   attached(){
     let that = this;
     document.onmousedown = function(e) {
-      if(!e.target.id.includes("tile")){
+      if(!e.target.id.includes(",")){
         return;
       }
       console.log(e.target.id);
-      e.target.style.boxShadow = "inset 0px 0px 0px 1px red";
+      e.target.style.boxShadow = "inset 0px 0px 0px 2px white";
+      setTimeout(x =>{
+        e.target.style.boxShadow = "";
+      },200);
     };
 
     document.onkeydown = function(e) {
@@ -49,6 +52,12 @@ export class Game{
                 break;
         }
     };
+  }
+
+  walkTo(x,y){
+    setInterval( x=> {
+
+    },100);
   }
 
   getTopPos(el) {
