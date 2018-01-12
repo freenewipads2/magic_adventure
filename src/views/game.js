@@ -1,3 +1,4 @@
+import 'jquery';
 export class Game{
   constructor(){
     this.plates = 5000;
@@ -10,27 +11,15 @@ export class Game{
       if(!e.target.id.includes("tile")){
         return;
       }
-      let target = e.target;
-
-      let wrapper = document.getElementById("overlay");
-      let char = document.getElementById("char");
-
-      overlay.innerHTML = "<div class='transition-slow' style='position: absolute; top: " + char.style.top + ";left:" + char.style.left + "; width: 2vh;height:2vh;background:blue;border-radius: 100%;' id='aa'></div>";
-      setTimeout(x=>{
-      document.getElementById("aa").style.top = that.getTopPos(target) + "px";
-      document.getElementById("aa").style.left = that.getLeftPos(target) + "px";
-      console.log(document.getElementById("aa").style.top);
-      },100);
-
-      setTimeout(x=>{
-        overlay.innerHTML = "";
-      },600);
+      console.log(e.target.id);
+      e.target.style.boxShadow = "inset 0px 0px 0px 1px red";
     };
+
     document.onkeydown = function(e) {
         let top = document.getElementById("char").style.top.split("px")[0];
         let left = document.getElementById("char").style.left.split("px")[0];
         let result;
-        let speed = 10;
+        let speed = 20;
         switch (e.keyCode) {
           case 13: //enter
                   if(that.input.length > 0){
