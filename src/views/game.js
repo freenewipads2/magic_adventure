@@ -5,9 +5,29 @@ export class Game{
     this.types = ["water","concrete"];
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
+    this.world = this.Create2DArray(20);
+  }
+  generateWorld(){
+    let sizeX = 20;
+    let sizeY = 20;
+    for(let y = 0; y != sizeY; y++){
+      for(let x = 0; x != sizeX; x++){
+        this.world[x][y] = this.type();
+      }
+    }
+  }
+  Create2DArray(rows) {
+    var arr = [];
+
+    for (var i=0;i<rows;i++) {
+       arr[i] = [];
+    }
+
+    return arr;
   }
   attached(){
     let that = this;
+    this.generateWorld();
     document.onmousedown = function(e) {
       if(!e.target.id.includes(",")){
         return;
@@ -15,13 +35,14 @@ export class Game{
       clearInterval(that.walk);
       let tmp = e.target.id.split(",");
       let pos = {x: parseInt(tmp[1]),y: parseInt(tmp[0])};
-      console.log("TARGET");
-      console.log(pos);
-      console.log("------------");
       e.target.style.boxShadow = "inset 0px 0px 0px 2px white";
       setTimeout(x =>{
         e.target.style.boxShadow = "";
       },200);
+
+      if($(e.target).hasClass("water")){
+        return;
+      }
       that.goto(pos,e.target);
     };
 
@@ -80,6 +101,9 @@ export class Game{
   goLeft(){
     this.currentPos.x++;
     let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    if(!newTarget){
+      return false;
+    }
     document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
     document.getElementById("char").style.transform = 'rotate(0deg)';
 
@@ -87,6 +111,9 @@ export class Game{
   goRight(){
     this.currentPos.x--;
     let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    if(!newTarget){
+      return false;
+    }
     document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
     document.getElementById("char").style.transform = 'rotate(180deg)';
 
@@ -94,12 +121,18 @@ export class Game{
   goUp(){
     this.currentPos.y--;
     let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    if(!newTarget){
+      return false;
+    }
     document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
     this.currentPos.y++;
     let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
+    if(!newTarget){
+      return false;
+    }
     document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
     document.getElementById("char").style.transform = 'rotate(90deg)';
   }
