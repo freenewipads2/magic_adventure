@@ -6,6 +6,8 @@ export class Game{
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
     this.world = this.Create2DArray(20);
+    this.moved = {x: 0, y: 0}
+    this.moveLength = this.viewportToPixels(10);
   }
   generateWorld(){
     let sizeX = 20;
@@ -27,7 +29,7 @@ export class Game{
   }
   attached(){
     let that = this;
-    this.generateWorld();
+    this.setPosition({x: 5,  y: 3 });
     document.onmousedown = function(e) {
       if(!e.target.id.includes(",")){
         return;
@@ -76,6 +78,10 @@ export class Game{
   }
 
   goto(pos,target){
+    console.log("TARGET: ");
+    console.log(pos);
+    console.log("CHAR POS: ");
+    console.log(this.currentPos);
     this.walk = setInterval( x=> {
       if(pos.x == this.currentPos.x && pos.y == this.currentPos.y){
         clearInterval(this.walk);
@@ -97,44 +103,59 @@ export class Game{
       }
     },100);
   }
+  viewportToPixels(value) {
+    var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
+    var result = (y*value)/100;
+    return(result);
+  }
+
+  setPosition(pos){
+    this.currentPos = pos;
+    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+  }
   goLeft(){
-    this.currentPos.x++;
-    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
-    if(!newTarget){
-      return false;
+    if(!this.checkLeft()){
+      return;
     }
-    document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
+    this.currentPos.x++;
     document.getElementById("char").style.transform = 'rotate(0deg)';
-
+    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
   }
   goRight(){
-    this.currentPos.x--;
-    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
-    if(!newTarget){
-      return false;
+    if(this.currentPos.x == 0){
+      return;
     }
-    document.getElementById("char").style.left = this.getPosition(newTarget).x + "px";
+    this.currentPos.x--;
     document.getElementById("char").style.transform = 'rotate(180deg)';
+    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
 
   }
   goUp(){
-    this.currentPos.y--;
-    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
-    if(!newTarget){
-      return false;
+    if(this.currentPos.y == 0 ){
+      return;
     }
-    document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
+    this.currentPos.y--;
+    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
     this.currentPos.y++;
-    let newTarget = document.getElementById((this.currentPos.x + "," + this.currentPos.y).toString());
-    if(!newTarget){
+    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    document.getElementById("char").style.transform = 'rotate(90deg)';
+  }
+
+  checkLeft(){
+    if(document.getElementById((this.currentPos.x + 1).toString() + "," + (this.currentPos.y).toString()).className.includes("water")){
       return false;
     }
-    document.getElementById("char").style.top = this.getPosition(newTarget).y + "px";
-    document.getElementById("char").style.transform = 'rotate(90deg)';
+    return true;
   }
 
   getPosition(el) {
