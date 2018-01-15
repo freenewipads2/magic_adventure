@@ -2,7 +2,6 @@ import 'jquery';
 export class Game{
   constructor(){
     this.plates = 5000;
-    this.types = ["water","concrete"];
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
     this.world = this.Create2DArray(20);
@@ -173,10 +172,6 @@ export class Game{
     };
   }
 
-  type(){
-    let i = Math.floor(Math.random() * 2);
-    return this.types[i];
-  }
   select(e){
     console.log(e.target.id);
   }

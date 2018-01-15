@@ -1,27 +1,11 @@
 <template>
-<div class="container game-wrapper" id="gameWrapper">
-
-<div style="width: 160vh;height:90vh; overflow: hidden;position: relative;top:0%;left:0%;">
-
-<div id="world" class="p-absolute transition-medium" style="top:0px;left:0px;">
-<div repeat.for="y of 20" style="width: 200vh">
-  <div class="square ${type()} transition-medium txt-c-primary txt-s-md txt-a-c" repeat.for="x of 20" id="${$parent.$index},${$index}">
-    [${$parent.$index},${$index}]
-  </div>
-</div>
-</div>
-<div class="p-absolute d-flex flex-j-c flex-a-c" style="width: 150vh;height:90vh;pointer-events:none">
-  <div class="square ${type()} transition-fast" id="char"></div>
-</div>
+<require from="world/world"></require>
 
 
+<world class="p-absolute" style="top:0%;left: 0%;"></world>
+
+<div class="square ${type()} transition-fast p-absolute" id="char"></div>
 </div>
 
-
-<div style="overflow-x:hidden; overflow-y: scroll;width: 100%;" class="txt-c-white txt-s-sm">
-<div repeat.for="text of getTexts()" class="p-l-sm"><span class="txt-heavy">Player:</span> ${text}</div>
-</div>
-<input type="text" class="p-l-sm txt-s-sm" style="width: 100%;height: 50px;;outline:0;border:0;background:transparent;border-bottom: 2px solid white;color:white" value.bind="input" focus="true">
-</div>
 
 </template>
