@@ -8,7 +8,43 @@ export class PlayerState{
     this.position = {x: 0, y: 0};
   }
 
-  setHealth(health){ this.health += health }
-  setMana(mana){ this.mana += mana }
-  setPosition(position) { this.position = position  }
+  watchHealth(){
+    this.healthWatcher = setTimeout(x => {
+      if(this.health < this.maxHealth){
+        this.setHealth(1);
+      }
+    },1000);
+  }
+
+  watchMana(){
+    this.manaWatcher = setTimeout(x => {
+      if(this.mana < this.maxMana){
+        this.setMana(1);
+      }
+    },1000);
+  }
+
+  stopWatching(){
+    clearInterval(this.healthWatcher);
+    clearInterval(this.manaWatcher);
+  }
+
+  setHealth(health){
+    if(this.health + health > this.maxHealth){
+      this.health = this.maxHealth;
+    } else if(this.health + health <= 0){
+      this.dead();
+    } else {
+    this.health += health
+    }
+  }
+  setMana(mana){
+    if(this.mana + mana > this.maxMana){
+      this.mana = this.maxMana;
+    } else {
+    this.mana += mana
+    }
+  }
+setPosition(position) { this.position = position  }
+dead(){ }
 }
