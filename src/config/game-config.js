@@ -1,5 +1,5 @@
 export class GameConfig{
-  consturctor(){
+  constructor(){
     this.showTilePosition = true;
   }
 }

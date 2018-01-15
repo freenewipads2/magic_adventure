@@ -9,7 +9,6 @@ export class Game{
     this.config = gameConfig;
     this.plates = 5000;
     this.texts = [];
-    this.currentPos = {x: 0, y: 0};
 
     this.moved = {x: 0, y: 0}
     this.moveLength = this.viewportToPixels(10);
@@ -72,11 +71,11 @@ export class Game{
   goto(pos,target){
 
     this.walk = setInterval( x=> {
-      if(pos.x == this.currentPos.x && pos.y == this.currentPos.y){
+      if(pos.x == this.playerState.position.x && pos.y == this.playerState.position.y){
         clearInterval(this.walk);
         return;
       }
-      let delta = {x: pos.x - this.currentPos.x, y: pos.y - this.currentPos.y}
+      let delta = {x: pos.x - this.playerState.position.x, y: pos.y - this.playerState.position.y}
 
       if(delta.x > 0){
         this.goLeft();
@@ -105,77 +104,77 @@ export class Game{
   }
 
   setPosition(pos){
-    this.currentPos = pos;
-    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
-    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.playerState.position = pos;
+    this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
+    this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
   }
   goLeft(){
     if(!this.checkLeft()){
       return;
     }
-    this.currentPos.x++;
+    this.playerState.position.x++;
     document.getElementById("char").style.transform = 'rotate(0deg)';
-    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
   }
   goRight(){
-    if(this.currentPos.x == 0){
+    if(this.playerState.position.x == 0){
       return;
     }
     if(!this.checkRight()){
       return;
     }
-    this.currentPos.x--;
+    this.playerState.position.x--;
     document.getElementById("char").style.transform = 'rotate(180deg)';
-    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px"
+    this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px"
 
   }
   goUp(){
     if(!this.checkTop()){
       return;
     }
-    if(this.currentPos.y == 0 ){
+    if(this.playerState.position.y == 0 ){
       return;
     }
-    this.currentPos.y--;
-    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.playerState.position.y--;
+    this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
     if(!this.checkDown()){
       return;
     }
-    this.currentPos.y++;
-    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.playerState.position.y++;
+    this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(90deg)';
   }
 
   checkLeft(){
-    let tmpX = (this.currentPos.x +1).toString();
-    let tmpY = (this.currentPos.y).toString();
+    let tmpX = (this.playerState.position.x +1).toString();
+    let tmpY = (this.playerState.position.y).toString();
     if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
       return false;
     }
     return true;
   }
   checkRight(){
-    let tmpX = (this.currentPos.x - 1).toString();
-    let tmpY = (this.currentPos.y).toString();
+    let tmpX = (this.playerState.position.x - 1).toString();
+    let tmpY = (this.playerState.position.y).toString();
     if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
       return false;
     }
     return true;
   }
   checkTop(){
-    let tmpX = (this.currentPos.x).toString();
-    let tmpY = (this.currentPos.y-1).toString();
+    let tmpX = (this.playerState.position.x).toString();
+    let tmpY = (this.playerState.position.y-1).toString();
     if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
       return false;
     }
     return true;
   }
   checkDown(){
-    let tmpX = (this.currentPos.x).toString();
-    let tmpY = (this.currentPos.y + 1).toString();
+    let tmpX = (this.playerState.position.x).toString();
+    let tmpY = (this.playerState.position.y + 1).toString();
     if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
       return false;
     }
