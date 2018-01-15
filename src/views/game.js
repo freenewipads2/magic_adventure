@@ -4,31 +4,15 @@ export class Game{
     this.plates = 5000;
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
-    this.world = this.Create2DArray(20);
+
     this.moved = {x: 0, y: 0}
     this.moveLength = this.viewportToPixels(10);
   }
-  generateWorld(){
-    let sizeX = 20;
-    let sizeY = 20;
-    for(let y = 0; y != sizeY; y++){
-      for(let x = 0; x != sizeX; x++){
-        this.world[x][y] = this.type();
-      }
-    }
-  }
-  Create2DArray(rows) {
-    var arr = [];
 
-    for (var i=0;i<rows;i++) {
-       arr[i] = [];
-    }
-
-    return arr;
-  }
   attached(){
     let that = this;
-    this.world = document.getElementById("world");
+    this.world = document.getElementById("char");
+        this.setPosition({x: 4, y: 4});
     document.onmousedown = function(e) {
       if(!e.target.id.includes(",")){
         return;
@@ -114,7 +98,7 @@ export class Game{
   goLeft(){
     this.currentPos.x++;
     document.getElementById("char").style.transform = 'rotate(0deg)';
-    this.world.style.left = -this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
   }
   goRight(){
     if(this.currentPos.x == 0){
@@ -122,7 +106,7 @@ export class Game{
     }
     this.currentPos.x--;
     document.getElementById("char").style.transform = 'rotate(180deg)';
-    this.world.style.left = -this.viewportToPixels(this.currentPos.x * 10)  + "px"
+    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px"
 
   }
   goUp(){
@@ -130,12 +114,12 @@ export class Game{
       return;
     }
     this.currentPos.y--;
-    this.world.style.top = -this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
     this.currentPos.y++;
-    this.world.style.top = -this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(90deg)';
   }
 
