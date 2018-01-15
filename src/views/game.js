@@ -29,7 +29,7 @@ export class Game{
   }
   attached(){
     let that = this;
-    this.setPosition({x: 5,  y: 3 });
+    this.world = document.getElementById("world");
     document.onmousedown = function(e) {
       if(!e.target.id.includes(",")){
         return;
@@ -49,11 +49,6 @@ export class Game{
     };
 
     document.onkeydown = function(e) {
-        let top = document.getElementById("char").style.top.split("px")[0];
-        let left = document.getElementById("char").style.left.split("px")[0];
-        let result;
-        let speed = 20;
-        console.log(e.keyCode);
         switch (e.keyCode) {
           case 13: //enter
                   if(that.input.length > 0){
@@ -78,10 +73,7 @@ export class Game{
   }
 
   goto(pos,target){
-    console.log("TARGET: ");
-    console.log(pos);
-    console.log("CHAR POS: ");
-    console.log(this.currentPos);
+
     this.walk = setInterval( x=> {
       if(pos.x == this.currentPos.x && pos.y == this.currentPos.y){
         clearInterval(this.walk);
@@ -117,16 +109,13 @@ export class Game{
 
   setPosition(pos){
     this.currentPos = pos;
-    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
-    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
   }
   goLeft(){
-    if(!this.checkLeft()){
-      return;
-    }
     this.currentPos.x++;
     document.getElementById("char").style.transform = 'rotate(0deg)';
-    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    this.world.style.left = -this.viewportToPixels(this.currentPos.x * 10)  + "px";
   }
   goRight(){
     if(this.currentPos.x == 0){
@@ -134,7 +123,7 @@ export class Game{
     }
     this.currentPos.x--;
     document.getElementById("char").style.transform = 'rotate(180deg)';
-    document.getElementById("char").style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
+    this.world.style.left = -this.viewportToPixels(this.currentPos.x * 10)  + "px"
 
   }
   goUp(){
@@ -142,12 +131,12 @@ export class Game{
       return;
     }
     this.currentPos.y--;
-    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.world.style.top = -this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
     this.currentPos.y++;
-    document.getElementById("char").style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
+    this.world.style.top = -this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(90deg)';
   }
 
