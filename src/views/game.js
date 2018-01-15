@@ -1,6 +1,11 @@
 import 'jquery';
+import { inject } from 'aurelia-framework';
+import { PlayerState } from 'player/player-state';
+
+@inject(PlayerState)
 export class Game{
-  constructor(){
+  constructor(playerState){
+    this.playerState = playerState;
     this.plates = 5000;
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
@@ -14,6 +19,9 @@ export class Game{
     this.world = document.getElementById("char");
         this.setPosition({x: 4, y: 4});
     document.onmousedown = function(e) {
+      if(e.target.id == "enemy"){
+        //do something
+      }
       if(!e.target.id.includes(",")){
         return;
       }
