@@ -1,11 +1,12 @@
 import 'jquery';
 import { inject } from 'aurelia-framework';
 import { PlayerState } from 'player/player-state';
-
-@inject(PlayerState)
+import { GameConfig } from 'config/game-config';
+@inject(PlayerState, GameConfig)
 export class Game{
-  constructor(playerState){
+  constructor(playerState, gameConfig){
     this.playerState = playerState;
+    this.config = gameConfig;
     this.plates = 5000;
     this.texts = [];
     this.currentPos = {x: 0, y: 0};
@@ -28,13 +29,18 @@ export class Game{
       clearInterval(that.walk);
       let tmp = e.target.id.split(",");
       let pos = {x: parseInt(tmp[1]),y: parseInt(tmp[0])};
-      e.target.style.boxShadow = "inset 0px 0px 0px 2px white";
-      setTimeout(x =>{
-        e.target.style.boxShadow = "";
-      },200);
 
       if($(e.target).hasClass("water")){
+        e.target.style.boxShadow = "inset 0px 0px 0px 2px red";
+        setTimeout(x =>{
+          e.target.style.boxShadow = "";
+        },200);
         return;
+      } else {
+        e.target.style.boxShadow = "inset 0px 0px 0px 2px green";
+        setTimeout(x =>{
+          e.target.style.boxShadow = "";
+        },200);
       }
       that.goto(pos,e.target);
     };
@@ -104,6 +110,9 @@ export class Game{
     this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
   }
   goLeft(){
+    if(!this.checkLeft()){
+      return;
+    }
     this.currentPos.x++;
     document.getElementById("char").style.transform = 'rotate(0deg)';
     this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px";
@@ -112,12 +121,18 @@ export class Game{
     if(this.currentPos.x == 0){
       return;
     }
+    if(!this.checkRight()){
+      return;
+    }
     this.currentPos.x--;
     document.getElementById("char").style.transform = 'rotate(180deg)';
     this.world.style.left = this.viewportToPixels(this.currentPos.x * 10)  + "px"
 
   }
   goUp(){
+    if(!this.checkTop()){
+      return;
+    }
     if(this.currentPos.y == 0 ){
       return;
     }
@@ -126,13 +141,42 @@ export class Game{
     document.getElementById("char").style.transform = 'rotate(270deg)';
   }
   goDown(){
+    if(!this.checkDown()){
+      return;
+    }
     this.currentPos.y++;
     this.world.style.top = this.viewportToPixels(this.currentPos.y * 10)  + "px";
     document.getElementById("char").style.transform = 'rotate(90deg)';
   }
 
   checkLeft(){
-    if(document.getElementById((this.currentPos.x + 1).toString() + "," + (this.currentPos.y).toString()).className.includes("water")){
+    let tmpX = (this.currentPos.x +1).toString();
+    let tmpY = (this.currentPos.y).toString();
+    if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
+      return false;
+    }
+    return true;
+  }
+  checkRight(){
+    let tmpX = (this.currentPos.x - 1).toString();
+    let tmpY = (this.currentPos.y).toString();
+    if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
+      return false;
+    }
+    return true;
+  }
+  checkTop(){
+    let tmpX = (this.currentPos.x).toString();
+    let tmpY = (this.currentPos.y-1).toString();
+    if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
+      return false;
+    }
+    return true;
+  }
+  checkDown(){
+    let tmpX = (this.currentPos.x).toString();
+    let tmpY = (this.currentPos.y + 1).toString();
+    if(document.getElementById( tmpY + "," + tmpX ).className.includes("water")){
       return false;
     }
     return true;

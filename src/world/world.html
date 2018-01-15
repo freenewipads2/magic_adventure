@@ -2,7 +2,11 @@
   <require from="styles/world.css"></require>
 <div id="world" class="p-absolute">
   <div repeat.for="y of height" class="d-flex flex-j-c" style="width: auto">
-    <div class="square ${getTile($parent.$index,$index)}" repeat.for="x of width" id="${$parent.$index},${$index}"></div>
+    <div class="square ${getTile($parent.$index,$index)} txt-c-white txt-s-sm d-flex flex-j-c flex-a-c" repeat.for="x of width" id="${$parent.$index},${$index}">
+      <div if.bind="config.showTilePosition" class="o-sm p-a-md" style="pointer-events: none">
+      [${$parent.$index},${$index}]
+      </div>
+    </div>
   </div>
 </div>
 </template>

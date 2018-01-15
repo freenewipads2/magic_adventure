@@ -1,6 +1,10 @@
-
+import { inject } from 'aurelia-framework';
+import { GameConfig } from 'config/game-config';
+@inject(GameConfig)
 export class World{
-  constructor(){
+  constructor(gameConfig){
+    this.config = gameConfig;
+    console.log(this.config);
     this.width = 20;
     this.height = 10;
     this.data = null;
