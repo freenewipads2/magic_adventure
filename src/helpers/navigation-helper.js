@@ -42,6 +42,7 @@ export class NavigationHelper{
         };
     
         document.onkeydown = (e) => {
+          setTimeout(x => {
             switch (e.keyCode) {
               case 13: //enter
                       if(this.input.length > 0){
@@ -62,6 +63,7 @@ export class NavigationHelper{
                     this.goDown();
                     break;
             }
+          },this.playerState.speed);
         };
       }
       selectEnemy(e){
@@ -89,7 +91,7 @@ export class NavigationHelper{
           else if(delta.y < 0){
             this.goUp();
           }
-        },100);
+        },this.playerState.speed);
       }
       viewportToPixels(value) {
         var w = window,

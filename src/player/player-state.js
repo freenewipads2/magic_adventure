@@ -1,10 +1,16 @@
 export class PlayerState{
   constructor(){
+
+    //move to stats-component
     this.health = 100;
     this.mana = 100;
 
     this.maxHealth = 100;
     this.maxMana = 100;
+
+    this.speed = 1000;
+
+    //other
     this.position = {x: 0, y: 0};
   }
 
