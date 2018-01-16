@@ -9,6 +9,8 @@ export class World{
     this.height = 10;
     this.data = null;
     this.types = ["water","wood"];
+    this.scrollLeft = 0;
+    this.scrollTop = 0;
 
     this.data = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -27,6 +29,10 @@ export class World{
 
 
   }
+
+  attached(){
+  }
+
 
   getTile(x,y){
     return this.types[this.data[x][y]];

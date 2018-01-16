@@ -1,16 +1,16 @@
 <template>
 <require from="world/world"></require>
-<require from="player/player"></require>
-<require from="enemy/enemy"></require>
 
 <world class="p-absolute" style="top:0%;left: 0%;"></world>
-<player class="p-absolute" style="top:0%;left: 0%;"></player>
-<enemy class="p-absolute" style="top:0%;left: 0%;"></enemy>
+
 <div class="p-absolute txt-c-white txt-s-md bg-c-black p-a-md txt-a-c" style="top: 10px;right:10px">
 Health:${playerState.health}<br>
 Mana:${playerState.mana}<br>
 [${playerState.position.x},${playerState.position.y}]
 </div>
-
+<div style="position: absolute; top: 0%;left:0%;width:100%;height: 100px"  id="top_move" mouseout.delegate="stopScrolling()" mouseover.delegate="startScrolling('top')" class=""></div>
+<div style="position: absolute; top: 100px;left:0%;width:100px;height: 100%" id="right_move" mouseout.delegate="stopScrolling()" mouseover.delegate="startScrolling('right')" class=""></div>
+<div style="position: absolute; bottom: 0%;left:0%;width:100%;height: 100px" id="bottom_move" mouseout.delegate="stopScrolling()" mouseover.delegate="startScrolling('bottom')" class=""></div>
+<div style="position: absolute; top: 0%;right:0%;width:100px;height: 100%" id="left_move" mouseout.delegate="stopScrolling()" mouseover.delegate="startScrolling('left')" class=""></div>
 
 </template>

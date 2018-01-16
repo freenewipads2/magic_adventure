@@ -11,6 +11,10 @@ export class Game{
     this.config = gameConfig;
     this.navigationHelper = navigationHelper;
     this.combatHelper = combatHelper;
+
+    this.scrollTop = 0;
+    this.scrollLeft = 0;
+    this.scrollDirection = null;
     
 
   }
@@ -20,7 +24,33 @@ export class Game{
     this.navigationHelper.setPosition({x: 4, y: 4});
   }
 
- 
+  startScrolling(dir){
+    this.scrollDirection = dir;
+    $("#" + this.scrollDirection + "_move").toggleClass("showScrollDirection");
+    this.scroll = setInterval(x =>{
+      if(this.scrollDirection == "bottom"){
+        this.scrollTop--;
+        document.getElementById("world").style.top = this.scrollTop + "px";
+      }
+      else if(this.scrollDirection == "top"){
+        this.scrollTop++;
+        document.getElementById("world").style.top = this.scrollTop + "px";
+      }
+      else if(this.scrollDirection == "left"){
+        this.scrollLeft--;
+        document.getElementById("world").style.left = this.scrollLeft + "px";
+      }
+      else if(this.scrollDirection == "right"){
+        this.scrollLeft++;
+        document.getElementById("world").style.left = this.scrollLeft + "px";
+      }
+    },1);
+  }
+
+  stopScrolling(){
+    $("#" + this.scrollDirection + "_move").toggleClass("showScrollDirection");
+    clearInterval(this.scroll);
+  }
 
   select(e){
     console.log(e.target.id);
