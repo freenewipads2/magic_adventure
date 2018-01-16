@@ -9,9 +9,10 @@ export class NavigationHelper{
         this.config = gameConfig;
         this.plates = 5000;
         this.texts = [];
-    
+
         this.moved = {x: 0, y: 0}
         this.moveLength = this.viewportToPixels(10);
+        this.canWalk = true;
       }
       enable(){
         this.world = document.getElementById("char");
@@ -25,7 +26,7 @@ export class NavigationHelper{
           clearInterval(this.walk);
           let tmp = e.target.id.split(",");
           let pos = {x: parseInt(tmp[1]),y: parseInt(tmp[0])};
-    
+
           if($(e.target).hasClass("water")){
             e.target.style.boxShadow = "inset 0px 0px 0px 2px red";
             setTimeout(x =>{
@@ -40,45 +41,54 @@ export class NavigationHelper{
           }
           this.goto(pos,e.target);
         };
-    
+
         document.onkeydown = (e) => {
-          setTimeout(x => {
-            switch (e.keyCode) {
-              case 13: //enter
-                      if(this.input.length > 0){
-                        this.texts.push(this.input);
-                        this.input = "";
-                      }
-                      break;
-              case 37: // <-
-                  this.goRight();
-                  break;
-              case 38: //up
-                    this.goUp();
-                    break;
-              case 39: // ->
-                  this.goLeft();
-                  break;
-                case 40: //down
-                    this.goDown();
-                    break;
-            }
-          },this.playerState.speed);
+          if(this.canWalk){
+            this.walk(e);
+          }
         };
+
+      }
+
+      walk(e){
+        this.canWalk = false;
+        setTimeout(x =>{
+        switch (e.keyCode) {
+          case 13: //enter
+                  if(this.input.length > 0){
+                    this.texts.push(this.input);
+                    this.input = "";
+                  }
+                  break;
+          case 37: // <-
+              this.goRight();
+              break;
+          case 38: //up
+                this.goUp();
+                break;
+          case 39: // ->
+              this.goLeft();
+              break;
+            case 40: //down
+                this.goDown();
+                break;
+        }
+        this.canWalk = true;
+        },this.playerState.speed);
       }
       selectEnemy(e){
           console.log("selected");
           e.target.style.boxShadow = "inset 0px 0px 0px 2px black";
       }
       goto(pos,target){
-    
+
         this.walk = setInterval( x=> {
           if(pos.x == this.playerState.position.x && pos.y == this.playerState.position.y){
             clearInterval(this.walk);
             return;
           }
           let delta = {x: pos.x - this.playerState.position.x, y: pos.y - this.playerState.position.y}
-    
+
           if(delta.x > 0){
             this.goLeft();
           }
@@ -100,11 +110,11 @@ export class NavigationHelper{
           g = d.getElementsByTagName('body')[0],
           x = w.innerWidth || e.clientWidth || g.clientWidth,
           y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-    
+
         var result = (y*value)/100;
         return(result);
       }
-    
+
       setPosition(pos){
         this.playerState.position = pos;
         this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
@@ -128,7 +138,7 @@ export class NavigationHelper{
         this.playerState.position.x--;
         document.getElementById("char").style.transform = 'rotate(180deg)';
         this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px"
-    
+
       }
       goUp(){
         if(!this.checkTop()){
@@ -149,7 +159,7 @@ export class NavigationHelper{
         this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
         document.getElementById("char").style.transform = 'rotate(90deg)';
       }
-    
+
       checkLeft(){
         let tmpX = (this.playerState.position.x +1).toString();
         let tmpY = (this.playerState.position.y).toString();
@@ -182,17 +192,17 @@ export class NavigationHelper{
         }
         return true;
       }
-    
+
       getPosition(el) {
         var xPos = 0;
         var yPos = 0;
-    
+
         while (el) {
           if (el.tagName == "BODY") {
             // deal with browser quirks with body/window/document and page scroll
             var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
             var yScroll = el.scrollTop || document.documentElement.scrollTop;
-    
+
             xPos += (el.offsetLeft - xScroll + el.clientLeft);
             yPos += (el.offsetTop - yScroll + el.clientTop);
           } else {
@@ -200,7 +210,7 @@ export class NavigationHelper{
             xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
             yPos += (el.offsetTop - el.scrollTop + el.clientTop);
           }
-    
+
           el = el.offsetParent;
         }
         return {

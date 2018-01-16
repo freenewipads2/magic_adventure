@@ -8,7 +8,7 @@ export class PlayerState{
     this.maxHealth = 100;
     this.maxMana = 100;
 
-    this.speed = 1000;
+    this.speed = 500;
 
     //other
     this.position = {x: 0, y: 0};
