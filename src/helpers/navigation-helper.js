@@ -16,41 +16,9 @@ export class NavigationHelper{
       }
       enable(){
         this.world = document.getElementById("char");
-        document.onmousedown = (e) => {
-          if(e.target.id == "enemy"){
-            this.selectEnemy(e);
-          }
-          if(!e.target.id.includes(",")){
-            return;
-          }
-          clearInterval(this.walk);
-          let tmp = e.target.id.split(",");
-          let pos = {x: parseInt(tmp[1]),y: parseInt(tmp[0])};
-
-          if($(e.target).hasClass("water")){
-            e.target.style.boxShadow = "inset 0px 0px 0px 2px red";
-            setTimeout(x =>{
-              e.target.style.boxShadow = "";
-            },200);
-            return;
-          } else {
-            e.target.style.boxShadow = "inset 0px 0px 0px 2px green";
-            setTimeout(x =>{
-              e.target.style.boxShadow = "";
-            },200);
-          }
-          this.goto(pos,e.target);
-        };
-
-        document.onkeydown = (e) => {
-          if(this.canWalk){
-            this.walk(e);
-          }
-        };
-
       }
 
-      walk(e){
+      step(e){
         this.canWalk = false;
         setTimeout(x =>{
         switch (e.keyCode) {

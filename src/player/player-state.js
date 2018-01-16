@@ -8,10 +8,11 @@ export class PlayerState{
     this.maxHealth = 100;
     this.maxMana = 100;
 
-    this.speed = 500;
+    this.speed = 200;
 
     //other
     this.position = {x: 0, y: 0};
+    this.target = null;
   }
 
   watchHealth(){
