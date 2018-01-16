@@ -3,12 +3,14 @@ import { inject } from 'aurelia-framework';
 import { PlayerState } from 'player/player-state';
 import { GameConfig } from 'config/game-config';
 import { NavigationHelper } from 'helpers/navigation-helper';
-@inject(PlayerState, GameConfig, NavigationHelper)
+import { CombatHelper } from 'helpers/combat-helper';
+@inject(PlayerState, GameConfig, NavigationHelper, CombatHelper)
 export class Game{
-  constructor(playerState, gameConfig, navigationHelper){
+  constructor(playerState, gameConfig, navigationHelper, combatHelper){
     this.playerState = playerState;
     this.config = gameConfig;
     this.navigationHelper = navigationHelper;
+    this.combatHelper = combatHelper;
     
 
   }
