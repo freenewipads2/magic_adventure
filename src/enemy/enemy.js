@@ -1,8 +1,8 @@
 export class Enemy{
   constructor(){
     this.position = {
-      x: 4,
-      y: 6
+      x: 1,
+      y: 2
     }
   }
   attached(){

@@ -17,7 +17,7 @@ export class NavigationHelper{
         this.world = document.getElementById("char");
         document.onmousedown = (e) => {
           if(e.target.id == "enemy"){
-            //do something
+            this.selectEnemy(e);
           }
           if(!e.target.id.includes(",")){
             return;
@@ -64,7 +64,10 @@ export class NavigationHelper{
             }
         };
       }
-    
+      selectEnemy(e){
+          console.log("selected");
+          e.target.style.boxShadow = "inset 0px 0px 0px 2px black";
+      }
       goto(pos,target){
     
         this.walk = setInterval( x=> {
