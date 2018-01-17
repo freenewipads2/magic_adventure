@@ -1,13 +1,13 @@
+import { inject } from 'aurelia-framework';
 import { Enemy } from 'enemy/enemy';
 
-export class EnemyManager{
-  costructor(){
-    console.log("trigg");
+export class EnemyHandler{
+  constructor(){
     this.enemies = [];
   }
 
   addEnemy(id){
-    this.enemies[id] = new Enemy(1);
+    this.enemies.push(new Enemy(id));
 
   }
 

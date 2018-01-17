@@ -52,6 +52,15 @@ export class PlayerState{
     this.mana += mana
     }
   }
+  isClose(){
+    if(this.position.x + 1 == this.target.position.x && (this.position.y + 1 == this.target.position.y || this.position.y - 1 == this.target.position.y || this.position.y == this.target.position.y)){
+      return true
+    }
+    else if(this.position.x - 1 == this.target.position.x && (this.position.y + 1 == this.target.position.y || this.position.y - 1 == this.target.position.y || this.position.y == this.target.position.y)){
+      return true
+    }
+    return false;
+  }
 setPosition(position) { this.position = position  }
 dead(){ }
 }

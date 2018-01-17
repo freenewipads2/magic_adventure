@@ -1,16 +1,20 @@
+
 export class Enemy{
   constructor(id){
     this.position = {
-      x: 1,
-      y: 2
+      x: 4,
+      y: 4
     }
 
     this.id = id;
-  }
-  attached(){
-    this.setPosition();
+    this.health = 20;
+    this.maxHealth = 20;
+    setTimeout(x =>{
+      this.setPosition();
+    },100);
   }
   setPosition(){
+
     document.getElementById("enemy_" + this.id).style.left = this.viewportToPixels(this.position.x * 10)  + "px";
     document.getElementById("enemy_" + this.id).style.top = this.viewportToPixels(this.position.y * 10)  + "px";
   }
@@ -25,4 +29,5 @@ export class Enemy{
     var result = (y*value)/100;
     return(result);
   }
+
 }

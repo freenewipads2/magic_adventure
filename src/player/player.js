@@ -1,11 +1,13 @@
 import { inject } from 'aurelia-framework';
 import { PlayerState } from 'player/player-state';
 import { NavigationHelper } from 'helpers/navigation-helper';
-@inject(PlayerState, NavigationHelper)
+import { EnemyHandler } from 'enemy/enemy-handler';
+@inject(PlayerState, NavigationHelper, EnemyHandler)
 export class Player{
-  constructor(playerState, navigationHelper){
+  constructor(playerState, navigationHelper, enemyHandler){
     this.playerState = playerState;
     this.navigationHelper = navigationHelper;
+    this.enemyHandler = enemyHandler;
   }
 
   attached(){
@@ -41,9 +43,25 @@ export class Player{
       }
     };
 
+    this.combatInterval = setInterval(x=>{
+      if(this.playerState.target){
+        this.combat();
+      }
+    },1000);
+
   }
 
   target(e){
+    let id = e.split("_");
+    this.playerState.target = this.enemyHandler.enemies[id[1]];
+    document.getElementById(e).style.boxShadow = "inset 0px 0px 0px 2px green";
+  }
+
+  combat(){
+    if(this.playerState.isClose()){
+      this.enemyHandler.setHealth(this.playerState.target,-1);
+    }
+
 
   }
 

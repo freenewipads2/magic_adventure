@@ -15,13 +15,15 @@ export class Game{
     this.scrollTop = 0;
     this.scrollLeft = 0;
     this.scrollDirection = null;
-    
+
 
   }
 
   attached(){
     this.navigationHelper.enable();
-    this.navigationHelper.setPosition({x: 4, y: 4});
+    let width = Math.round(screen.width/2).toString().substr(0,2);
+    let height = Math.round(screen.height/2).toString().substr(0,1);
+    this.navigationHelper.setPosition({x: parseInt(width), y: parseInt(height)});
   }
 
   startScrolling(dir){
@@ -50,12 +52,5 @@ export class Game{
   stopScrolling(){
     $("#" + this.scrollDirection + "_move").toggleClass("showScrollDirection");
     clearInterval(this.scroll);
-  }
-
-  select(e){
-    console.log(e.target.id);
-  }
-  getTexts(){
-    return this.texts.reverse();
   }
 }

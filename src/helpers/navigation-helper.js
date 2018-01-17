@@ -13,9 +13,13 @@ export class NavigationHelper{
         this.moved = {x: 0, y: 0}
         this.moveLength = this.viewportToPixels(10);
         this.canWalk = true;
+        this.worldPosition  = {x: 0, y: 0}
       }
       enable(){
-        this.world = document.getElementById("char");
+        this.world = document.getElementById("world");
+        this.char = document.getElementById("char");
+        this.world.style.transition = "all " + (this.playerState.speed/1000).toString() + "s";
+        this.char.style.transition = "all " + (this.playerState.speed/1000).toString() + "s";
       }
 
       step(e){
@@ -85,16 +89,20 @@ export class NavigationHelper{
 
       setPosition(pos){
         this.playerState.position = pos;
-        this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
-        this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
+        this.char.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
+        this.char.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
       }
       goLeft(){
         if(!this.checkLeft()){
           return;
         }
         this.playerState.position.x++;
+        this.worldPosition.x--;
         document.getElementById("char").style.transform = 'rotate(0deg)';
-        this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
+        this.char.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
+        if(this.playerState.position.x < 30){
+          this.world.style.left = this.viewportToPixels( (this.worldPosition.x ) * 10)  + "px";
+        }
       }
       goRight(){
         if(this.playerState.position.x == 0){
@@ -104,8 +112,12 @@ export class NavigationHelper{
           return;
         }
         this.playerState.position.x--;
+        this.worldPosition.x++;
         document.getElementById("char").style.transform = 'rotate(180deg)';
-        this.world.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px"
+        this.char.style.left = this.viewportToPixels(this.playerState.position.x * 10)  + "px";
+        if(this.playerState.position.x > 10){
+          this.world.style.left = this.viewportToPixels( (this.worldPosition.x ) * 10)  + "px";
+        }
 
       }
       goUp(){
@@ -116,7 +128,11 @@ export class NavigationHelper{
           return;
         }
         this.playerState.position.y--;
-        this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
+        this.worldPosition.y++;
+        this.char.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
+        if(this.playerState.position.y > 4){
+        this.world.style.top = this.viewportToPixels(this.worldPosition.y * 10)  + "px";
+        }
         document.getElementById("char").style.transform = 'rotate(270deg)';
       }
       goDown(){
@@ -124,7 +140,9 @@ export class NavigationHelper{
           return;
         }
         this.playerState.position.y++;
-        this.world.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
+        this.worldPosition.y--;
+        this.char.style.top = this.viewportToPixels(this.playerState.position.y * 10)  + "px";
+        this.world.style.top = this.viewportToPixels(this.worldPosition.y * 10)  + "px";
         document.getElementById("char").style.transform = 'rotate(90deg)';
       }
 
