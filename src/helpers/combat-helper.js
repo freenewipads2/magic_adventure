@@ -1,16 +1,13 @@
-export class CombatHelper{
-    constructor(){
-        this.player = null;
-        this.selectedEnemy = null;
-    }
 
-    enableCombat(enemy){
-        setTimeout( x => {
-    
-        },1000);
-      }
-    
-      disableCombat(){
-    
-      }
+import { inject } from 'aurelia-framework';
+import { PlayerState } from 'player/player-state';
+import { NavigationHelper } from 'helpers/navigation-helper';
+import { EnemyHandler } from 'enemy/enemy-handler';
+@inject(PlayerState, NavigationHelper, EnemyHandler)
+export class CombatHelper{
+  constructor(playerState, navigationHelper, enemyHandler){
+    this.playerState = playerState;
+    this.navigationHelper = navigationHelper;
+    this.enemyHandler = enemyHandler;
+  }
 }

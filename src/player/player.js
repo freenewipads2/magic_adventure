@@ -54,12 +54,13 @@ export class Player{
   target(e){
     let id = e.split("_");
     this.playerState.target = this.enemyHandler.enemies[id[1]];
+    this.playerState.target.target = this.playerState;
     document.getElementById(e).style.boxShadow = "inset 0px 0px 0px 2px green";
   }
 
   combat(){
     if(this.playerState.isClose()){
-      this.enemyHandler.setHealth(this.playerState.target,-1);
+      this.enemyHandler.setHealth(this.playerState.target,-5);
     }
 
 

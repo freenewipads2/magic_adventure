@@ -24,6 +24,7 @@ export class Game{
     let width = Math.round(screen.width/2).toString().substr(0,2);
     let height = Math.round(screen.height/2).toString().substr(0,1);
     this.navigationHelper.setPosition({x: parseInt(width), y: parseInt(height)});
+    console.log("loaded");
   }
 
   startScrolling(dir){
