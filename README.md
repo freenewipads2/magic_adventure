@@ -1,5 +1,5 @@
 # magic_adventure
-RPG game built with java (still in prototype stage)
+RPG game prototype built using Aurelia
 
 # Installing
 - Download the repository
